@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DemoChat.Data;
@@ -68,8 +69,14 @@ namespace DemoChat.Areas.Identity.Pages.Account
             {
                 var user = new AppUser { UserName = Input.Name, Email = Input.Name };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
+                    if (user.UserName.Contains("boss"))
+                    {
+                        await _userManager.AddClaimAsync(user, new Claim("IamBoss", "no"));
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

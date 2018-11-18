@@ -48,6 +48,12 @@ namespace DemoChat
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ForBossOnly",
+                    policyBuilder => policyBuilder.RequireClaim("IamBoss"));
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
