@@ -72,10 +72,16 @@ namespace DemoChat.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    //if (user.UserName.Contains("boss"))
+                    //{
+                    //    await _userManager.AddClaimAsync(user, new Claim("IamBoss", "no"));
+                    //}
+
                     if (user.UserName.Contains("boss"))
                     {
-                        await _userManager.AddClaimAsync(user, new Claim("IamBoss", "no"));
+                        await _userManager.AddToRoleAsync(user, "boss");
                     }
+
 
                     _logger.LogInformation("User created a new account with password.");
 

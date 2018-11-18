@@ -48,7 +48,8 @@ namespace DemoChat.Controllers
             return View();
         }
 
-        [Authorize(Policy = "ForBossOnly")]
+        //[Authorize(Policy = "ForBossOnly")]
+        [Authorize(Roles = "boss,admin")]
         public IActionResult About()
         {
             ViewData["Message"] = "Top secret data for boss only.";

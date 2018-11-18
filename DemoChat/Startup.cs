@@ -38,7 +38,7 @@ namespace DemoChat
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<AppUser>(options => {
+            services.AddIdentity<AppUser, IdentityRole>(options => {
                 // configure identity options
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -46,7 +46,10 @@ namespace DemoChat
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
+
 
             services.AddAuthorization(options =>
             {
@@ -58,7 +61,7 @@ namespace DemoChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(RoleManager<IdentityRole> roleManager, IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -83,6 +86,14 @@ namespace DemoChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            try  // to prevent a problem with creating an initial DB
+            {
+                if (!roleManager.RoleExistsAsync("boss").Result)
+                    roleManager.CreateAsync(new IdentityRole("boss")).Wait();
+            }
+            catch { }
+
         }
     }
 }
