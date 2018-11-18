@@ -20,11 +20,20 @@ namespace DemoChat.Controllers
 
         public IActionResult Index()
         {
-            string[] ms = _db.Messages
-                .Select(m => $"{m.Text}\n{m.Sign}\t{m.When}\n")
-                .ToArray();
-            return Content(string.Join("\n", ms));
+            ViewBag.Messages = _db.Messages;
+            return View(new Message());
         }
+
+        [HttpPost]
+        public IActionResult Index(Message mes)
+        {
+            mes.When = DateTime.Now;
+            _db.Messages.Add(mes);
+            ViewBag.Messages = _db.Messages;
+            return View();
+        }
+
+
 
         public IActionResult About()
         {
