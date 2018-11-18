@@ -21,7 +21,7 @@ namespace DemoChat.Controllers
         public IActionResult Index()
         {
             ViewBag.Messages = _db.Messages;
-            return View(new Message());
+            return View();
         }
 
         [HttpPost]
@@ -29,6 +29,7 @@ namespace DemoChat.Controllers
         {
             mes.When = DateTime.Now;
             _db.Messages.Add(mes);
+            _db.SaveChanges();
             ViewBag.Messages = _db.Messages;
             return View();
         }

@@ -1,4 +1,5 @@
 ﻿using DemoChat.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -7,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace DemoChat.Data
 {
-    public class ChatContext
+    public class ChatContext : DbContext
     {
-        public ConcurrentBag<Message> Messages { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
-        public ChatContext()
-        {
-            Messages = new ConcurrentBag<Message>
-        {
-            new Message { Text="test text 1", Sign = "user1", When = DateTime.Now },
-        };
-        }
+        public ChatContext(DbContextOptions options) : base(options) { }
     }
 
 }

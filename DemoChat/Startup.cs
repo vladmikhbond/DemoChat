@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,7 +36,11 @@ namespace DemoChat
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<ChatContext>();
+            string conStr = "Server=(localdb)\\mssqllocaldb;Database=ChatDB-1111111;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+            services.AddDbContext<ChatContext>(options =>
+                options.UseSqlServer(conStr));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
