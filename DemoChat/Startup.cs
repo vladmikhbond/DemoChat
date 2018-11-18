@@ -38,7 +38,7 @@ namespace DemoChat
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => {
+            services.AddDefaultIdentity<AppUser>(options => {
                 // configure identity options
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;

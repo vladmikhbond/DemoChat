@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DemoChat.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<Message> Messages { get; set; }
 

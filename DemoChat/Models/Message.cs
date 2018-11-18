@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DemoChat.Data;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,6 @@ namespace DemoChat.Models
         public string Text { get; set; }
         public DateTime When { get; set; }
         //
-        public IdentityUser User { get; set; }
+        public AppUser User { get; set; }
     }
 }
