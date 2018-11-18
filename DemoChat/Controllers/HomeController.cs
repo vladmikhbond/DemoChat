@@ -5,36 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DemoChat.Models;
-using DemoChat.Data;
 
 namespace DemoChat.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ChatContext _db;
-
-        public HomeController(ChatContext db)
-        {
-            _db = db;
-        }
-
         public IActionResult Index()
         {
-            ViewBag.Messages = _db.Messages;
             return View();
         }
-
-        [HttpPost]
-        public IActionResult Index(Message mes)
-        {
-            mes.When = DateTime.Now;
-            _db.Messages.Add(mes);
-            _db.SaveChanges();
-            ViewBag.Messages = _db.Messages;
-            return View();
-        }
-
-
 
         public IActionResult About()
         {
