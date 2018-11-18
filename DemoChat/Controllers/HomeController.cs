@@ -5,13 +5,46 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DemoChat.Models;
+using Microsoft.AspNetCore.Authorization;
+using DemoChat.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoChat.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
+        readonly ApplicationDbContext _db;
+
+        public HomeController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public IActionResult Index()
         {
+            // get messages with users
+            ViewBag.Messages = _db.Messages.Include(m => m.User);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(Message mes)
+        {
+            // find current user in db
+            var user = _db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            if (user == null)
+                return NotFound();
+
+            // complete the message
+            mes.When = DateTime.Now;
+            mes.User = user;
+
+            // save the message
+            _db.Messages.Add(mes);
+            _db.SaveChanges();
+
+            ViewBag.Messages = _db.Messages;
             return View();
         }
 
