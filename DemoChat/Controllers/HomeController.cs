@@ -5,14 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DemoChat.Models;
+using DemoChat.Data;
 
 namespace DemoChat.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ChatContext _db;
+
+        public HomeController(ChatContext db)
+        {
+            _db = db;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            string[] ms = _db.Messages
+                .Select(m => $"{m.Text}\n{m.Sign}\t{m.When}\n")
+                .ToArray();
+            return Content(string.Join("\n", ms));
         }
 
         public IActionResult About()
