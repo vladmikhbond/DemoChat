@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <pre id="printer"></pre>
+
+    <script>
+    let baseUrl = 'https://localhost:44393';
+
+    //
+    fetch(baseUrl + '/api/messages', {
+        method: "GET",
+    })
+        .then(response => {
+            if (response.status !== 200)
+                alert(response.status + ' - ' + response.statusText);
+            else
+                response.json().then( obj => {
+                    printer.innerHTML = JSON.stringify(obj, null, 3)
+                })
+        })
+        .catch(alert);
+
+
+    //
+    let form = new FormData();
+    form.append('text', 'Some new massage text');
+    form.append('userName', 'aaa');
+
+    fetch(baseUrl + '/api/messages', {
+        method: "POST",
+        body: form,
+    })
+        .then(response => {
+            alert(response.status + ' - ' + response.statusText);
+        })
+        .catch(alert);
+
+    </script>
+</body>
+</html>

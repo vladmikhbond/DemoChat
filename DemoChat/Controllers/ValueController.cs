@@ -10,9 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoChat.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    //[EnableCors("AllowAll")]
+    [EnableCors("AllowAll")]
     public class ValueController : Controller
     {
         private readonly ApplicationDbContext _db;
