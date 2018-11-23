@@ -20,8 +20,8 @@ namespace DemoChat
 {
     public struct MyAuthOptions
     {
-        public const string ISSUER = "https://localhost:44393/"; // издатель токена
-        public const string AUDIENCE = "https://localhost:44393/"; // потребитель токена
+        public const string ISSUER = "1234567"; // издатель токена
+        public const string AUDIENCE = "3456789"; // потребитель токена
         const string KEY = "mysupersecret_secretkey!123";   // ключ для шифрации
         public const int LIFETIME = 1; // время жизни токена - 1 минута
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
@@ -110,7 +110,6 @@ namespace DemoChat
             });
 
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -126,6 +125,8 @@ namespace DemoChat
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            //app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

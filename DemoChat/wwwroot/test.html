@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js-auth-client</title>
+</head>
+<body>
+    <button id="button1">GET /api/message</button>
+    <pre id="printer"></pre>
+
+    <script>
+        button1.addEventListener('click', getApiMessages);
+
+        let baseUrl = 'https://localhost:44393';
+        let tokenKey = "accessToken";
+
+        // get token
+        let form = new FormData();
+        form.append('userName', 'aaa');
+        form.append('password', 'bbb');
+
+        fetch(baseUrl + '/token', {
+            method: "POST",
+            body: form,
+        })
+            .then(response => {
+                response.json().then(obj => {
+                    console.log(obj);
+                    // сохраняем в sessionStorage токен доступа
+                    sessionStorage.setItem(tokenKey, obj.access_token);
+                })
+            })
+            .catch(alert);
+
+
+        function getApiMessages() {
+            let token = sessionStorage.getItem(tokenKey);
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+
+            fetch(baseUrl + '/api/messages', {
+                method: "GET",
+                headers: myHeaders,
+            })
+                .then(response => {
+                    if (response.status !== 200)
+                        alert(response.status + ' - ' + response.statusText);
+                    else
+                        response.json().then(obj => {
+                            printer.innerHTML = JSON.stringify(obj, null, 3)
+                        })
+                })
+                .catch(alert);
+        }
+
+                //
+                //function getApiMessages() {
+                //    let token = sessionStorage.getItem(tokenKey);
+                //    let myHeaders = new Headers();
+                //    myHeaders.append("Authorization", "Bearer " + token);
+
+
+                //    fetch(baseUrl + '/api/messages', {
+                //        method: "GET",
+                //        headers: myHeaders,
+                //        //credentials: 'include',
+                //        //mode: 'no-cors'
+                //    })
+                //        .then(response => {
+                //            if (response.status !== 200)
+                //                alert(response.status + ' - ' + response.statusText);
+                //            else
+                //                response.json().then(obj => {
+                //                    printer.innerHTML = JSON.stringify(obj, null, 3)
+                //                })
+                //        })
+                //        .catch(alert);
+                //}
+
+
+
+                    ////
+                    //form = new FormData();
+                    //form.append('text', 'Some new massage text');
+                    //form.append('userName', 'aaa');
+
+                    //fetch(baseUrl + '/api/messages', {
+                    //    method: "POST",
+                    //    body: form,
+                    //})
+                    //    .then(response => {
+                    //        alert(response.status + ' - ' + response.statusText);
+                    //    })
+                    //    .catch(alert);
+
+    </script>
+</body>
+</html>

@@ -8,7 +8,6 @@
     <button id="button1">GET /api/message</button>
     <pre id="printer"></pre>
 
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
         button1.addEventListener('click', getApiMessages);
 
@@ -38,8 +37,6 @@
             let token = sessionStorage.getItem(tokenKey);
             let myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
-
-
 
             fetch(baseUrl + '/api/messages', {
                 method: "GET",

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoChat.Controllers
 {
-    [EnableCors("AllowAll")]
+    //[EnableCors("AllowAll")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ValueController : Controller
     {
@@ -26,9 +26,21 @@ namespace DemoChat.Controllers
 
         // GET api/messages
         [AllowAnonymous]
+        [HttpOptions("api/messages")]
+        public void Options()
+        {
+            Response.Headers.Add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+            //Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST");
+            //Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Response.ContentType = "text/html";
+        }
+
+        // GET api/messages
         [HttpGet("api/messages")]
         public IActionResult Get()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return Json(_db.Messages);
         }
 
