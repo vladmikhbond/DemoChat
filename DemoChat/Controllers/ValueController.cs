@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DemoChat.Data;
 using DemoChat.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DemoChat.Controllers
 {
     [EnableCors("AllowAll")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ValueController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -22,6 +25,7 @@ namespace DemoChat.Controllers
 
 
         // GET api/messages
+        [AllowAnonymous]
         [HttpGet("api/messages")]
         public IActionResult Get()
         {
