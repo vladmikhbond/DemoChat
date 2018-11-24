@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -113,7 +109,7 @@ namespace DemoChat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -134,9 +130,6 @@ namespace DemoChat
 
             app.UseAuthentication();
 
-
-
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -144,12 +137,12 @@ namespace DemoChat
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //try  // to prevent a problem with creating an initial DB
-            //{
-            //    if (!roleManager.RoleExistsAsync("boss").Result)
-            //        roleManager.CreateAsync(new IdentityRole("boss")).Wait();
-            //}
-            //catch { }
+            try  // to prevent a problem with creating an initial DB
+            {
+                if (!roleManager.RoleExistsAsync("boss").Result)
+                    roleManager.CreateAsync(new IdentityRole("boss")).Wait();
+            }
+            catch { }
 
         }
     }
